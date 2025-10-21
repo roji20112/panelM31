@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMINE→19</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --dark-bg: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #f0f0f0;
+            --border-color: #444;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--primary-color);
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        header p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        header a {
+            color: var(--success-color);
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            font-size: 0.8em;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            margin-left: 5px;
+        }
+
+        .btn-primary { background-color: var(--primary-color); }
+        .btn-success { background-color: var(--success-color); }
+        .btn-danger { background-color: var(--danger-color); }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .message.success { background-color: rgba(40, 167, 69, 0.2); border: 1px solid var(--success-color); }
+        .message.error { background-color: rgba(220, 53, 69, 0.2); border: 1px solid var(--danger-color); }
+        .message.info { background-color: rgba(0, 123, 255, 0.2); border: 1px solid var(--primary-color); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>AMINE→19</h1>
+            <p>Developed by <a href="https://t.me/mblrx" target="_blank">MBLRX</a></p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="message-container"></div>
+
+        <section class="card">
+            <h3>إرسال طلب صداقة</h3>
+            <form id="add-friend-form">
+                <div class="form-group">
+                    <label for="uid">معرف اللاعب (UID)</label>
+                    <input type="text" id="uid" required>
+                </div>
+                <div class="form-group">
+                    <label for="days">المدة (بالأيام)</label>
+                    <input type="number" id="days" value="1" min="1">
+                </div>
+                <button type="submit" class="btn btn-success">إرسال الطلب</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h3>سجل العمليات</h3>
+            <p class="message info">ملاحظة: هذه القائمة لا يتم حفظها على الجهاز وهي مجرد سجل للعملية الأخيرة.</p>
+            <button id="remove-all-btn" class="btn btn-danger">إرسال أمر "حذف الكل"</button>
+            <div class="table-container">
+                <table id="log-table">
+                    <thead>
+                        <tr>
+                            <th>العملية</th>
+                            <th>الاسم</th>
+                            <th>المعرف (UID)</th>
+                            <th>المدة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-table-body">
+                        <!-- سيتم ملؤها بواسطة JavaScript -->
+                    </tbody>
+                </table>
+                <p id="no-log-msg" style="display: none; text-align: center; margin-top: 20px;">لا توجد عمليات بعد.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 V6 Panel. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // =======================
+        // !! تحذير أمني جداً !!
+        // توكن البوت أدناه حساس للغاية. أي شخص يمكنه رؤية كود المصدر لهذه الصفحة سيتمكن من التحكم الكامل في بوتك.
+        // هذا الموقع آمن فقط للاستخدام الشخصي على جهازك. لا تقم أبداً برفعه على الإنترنت أو إرساله لشخص آخر.
+        // =======================
+        
+        // === معلومات البوت والمستلم ===
+        const BOT_TOKEN = "7656759013:AAF1wt5CYpJ2D_Hcq0_W2JRMgB-S8npc3Xg";
+        const CHAT_ID = "7092568161"; // المعرف الذي سيستقبل الرسائل
+
+        // === معلومات الحساب لإرسال الطلبات ===
+        const MAIN_ACCOUNT = {
+            uid: "4236847979",
+            token: "992A302F1C75F2F71DA4FC24A7ED2608C15A33F70121A264CA307D2A2D664365",
+            name: "الحساب الرئيسي"
+        };
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const addFriendForm = document.getElementById('add-friend-form');
+            const logTableBody = document.getElementById('log-table-body');
+            const noLogMsg = document.getElementById('no-log-msg');
+            const removeAllBtn = document.getElementById('remove-all-btn');
+            const messageContainer = document.getElementById('message-container');
+
+            // دالة لإرسال إشعار إلى تيليجرام
+            async function sendTelegramNotification(messageText) {
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                const payload = {
+                    chat_id: CHAT_ID,
+                    text: messageText,
+                    parse_mode: 'Markdown'
+                };
+                try {
+                    await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } catch (error) {
+                    console.error('فشل إرسال الإشعار إلى تيليجرام:', error);
+                }
+            }
+
+            function showMessage(text, type) {
+                messageContainer.innerHTML = `<div class="message ${type}">${text}</div>`;
+                setTimeout(() => { messageContainer.innerHTML = ''; }, 5000);
+            }
+
+            // دالة لتحديث سجل العمليات
+            function updateLog(operation, name, uid, duration) {
+                logTableBody.innerHTML = `
+                    <tr>
+                        <td>${operation}</td>
+                        <td>${name}</td>
+                        <td>${uid}</td>
+                        <td>${duration}</td>
+                    </tr>
+                `;
+                noLogMsg.style.display = 'none';
+            }
+
+            // دوال واجهة برمجة التطبيقات (APIs)
+            async function getPlayerInfo(uid) {
+                try {
+                    const url = `https://yasser-api-info-yr.vercel.app/player-info?uid=${uid}&region=me`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    const basic = data.basicInfo || {};
+                    return { name: basic.nickname || "غير معروف", level: basic.level || "؟" };
+                } catch (e) {
+                    console.error("Error fetching player info:", e);
+                    return { name: "خطأ", level: "؟" };
+                }
+            }
+
+            async function addFriendApi(uid, acc_uid, acc_pass) {
+                try {
+                    const url = `https://lnc-yasser-api-add-yr.vercel.app/add/${acc_uid}/${acc_pass}/${uid}`;
+                    const response = await fetch(url);
+                    return response.status === 200;
+                } catch (e) {
+                    console.error("Error adding friend:", e);
+                    return false;
+                }
+            }
+
+            // معالجة إرسال طلب صداقة
+            addFriendForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const uid = document.getElementById('uid').value;
+                const days = parseInt(document.getElementById('days').value);
+
+                const accUid = MAIN_ACCOUNT.uid;
+                const accPass = MAIN_ACCOUNT.token;
+                
+                const playerInfo = await getPlayerInfo(uid);
+                const success = await addFriendApi(uid, accUid, accPass);
+
+                if (success) {
+                    showMessage(`تم إرسال الطلب لـ ${playerInfo.name} بنجاح!`, "success");
+                    updateLog("إضافة", playerInfo.name, uid, `${days} يوم`);
+
+                    // إرسال إشعار إلى تيليجرام
+                    const telegramMessage = `✅ *تم إرسال طلب صداقة*\n\n👤 *الاسم:* ${playerInfo.name}\n🆔 *UID:* ${uid}\n🎖️ *المستوى:* ${playerInfo.level}\n⏳ *المدة:* ${days} يوم\n\n🤖 بواسطة V6→{MBLRX}`;
+                    sendTelegramNotification(telegramMessage);
+
+                    addFriendForm.reset();
+                } else {
+                    showMessage(`فشل إرسال الطلب لـ ${playerInfo.name}.`, "error");
+                }
+            });
+
+            // معالجة إرسال أمر "حذف الكل"
+            removeAllBtn.addEventListener('click', async function() {
+                if (!confirm('هل أنت متأكد من إرسال أمر "حذف الكل"؟')) return;
+                
+                showMessage('تم إرسال الأمر بنجاح.', "success");
+                updateLog("حذف الكل", "---", "---", "---");
+
+                // إرسال إشعار إلى تيليجرام
+                const telegramMessage = `🧹 *تم إرسال أمر "حذف الكل"*\n\n🤖 بواسطة V6→{MBLRX}`;
+                sendTelegramNotification(telegramMessage);
+            });
+        });
+    </script>
+</body>
+</html>
